@@ -1,23 +1,40 @@
 const React = require('react')
-const { Match, BrowserRouter } = require('react-router')
+const { Match, HashRouter, Redirect } = require('react-router')
 const { Home, About, Favorites, FavoriteForm, Favorite } = require('./pages')
-const Auth = require('./utils/auth-service')
+
+
+const auth = require('./utils/auth')(
+  process.env.REACT_APP_ID,
+  process.env.REACT_APP_DOMAIN
+)
 
 const App = React.createClass({
+  logout(e) {
+    auth.logout()
+    // setState ... to pop up login
+  },
   render() {
     return (
-      <BrowserRouter>
+      <HashRouter>
         <div>
-          <Match exactly pattern="/" component={Auth(Home)} />
-          <Match exactly pattern="/favorites" component={Favorites} />
-          <Match pattern="/favorites/new" component={FavoriteForm} />
-          <Match pattern="/favorites/:id/show" component={Favorite} />
-          <Match pattern="/favorites/:id/edit" component={FavoriteForm} />
-          <Match pattern="/about" component={About} />
+          <Match exactly pattern="/" render={(props) => <Home {...props} auth={auth} />} />
+          <MatchWhenAuthorized exactly pattern="/favorites" component={Favorites} />
+          <MatchWhenAuthorized pattern="/favorites/new" component={FavoriteForm} />
+          <MatchWhenAuthorized pattern="/favorites/:id/show" component={Favorite} />
+          <MatchWhenAuthorized pattern="/favorites/:id/edit" component={FavoriteForm} />
+          <MatchWhenAuthorized pattern="/about" component={About} />
         </div>
-      </BrowserRouter>
+      </HashRouter>
     )
   }
 })
+
+const MatchWhenAuthorized = ({component: Component, ...rest}) =>
+  <Match {...rest} render={props => auth.loggedIn() ?
+    <div>
+      <div style={{float: 'right'}}><button onClick={props.logout}>Logout</button></div>
+      <Component {...props} />
+    </div> : <Redirect to="/" />} />
+
 
 module.exports = App

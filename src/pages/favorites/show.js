@@ -1,7 +1,6 @@
 const React = require('react')
 const data = require('../../utils/data')()
 const { Redirect, Link } = require('react-router')
-// const { path } = require('ramda')
 
 import confirm from 'react-confirm2'
 

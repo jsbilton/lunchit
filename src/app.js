@@ -9,20 +9,28 @@ const auth = require('./utils/auth')(
 )
 
 const App = React.createClass({
+  getInitialState() {
+    return {
+        loggedIn: null
+    }
+  },
   logout(e) {
     auth.logout()
-    // setState ... to pop up login
+    this.setState({loggedIn: true})
   },
   render() {
     return (
       <HashRouter>
         <div>
+          {this.state.loggedIn === false
+            ? <Redirect to="/" />
+          : null }
           <Match exactly pattern="/" render={(props) => <Home {...props} auth={auth} />} />
-          <MatchWhenAuthorized exactly pattern="/favorites" component={Favorites} />
-          <MatchWhenAuthorized pattern="/favorites/new" component={FavoriteForm} />
-          <MatchWhenAuthorized pattern="/favorites/:id/show" component={Favorite} />
-          <MatchWhenAuthorized pattern="/favorites/:id/edit" component={FavoriteForm} />
-          <MatchWhenAuthorized pattern="/about" component={About} />
+          <MatchWhenAuthorized exactly pattern="/favorites" component={Favorites} logout={this.logout} />
+          <MatchWhenAuthorized pattern="/favorites/new" component={FavoriteForm} logout={this.logout} />
+          <MatchWhenAuthorized pattern="/favorites/:id/show" component={Favorite} logout={this.logout} />
+          <MatchWhenAuthorized pattern="/favorites/:id/edit" component={FavoriteForm} logout={this.logout} />
+          <MatchWhenAuthorized pattern="/about" component={About} logout={this.logout} />
         </div>
       </HashRouter>
     )
@@ -32,9 +40,13 @@ const App = React.createClass({
 const MatchWhenAuthorized = ({component: Component, ...rest}) =>
   <Match {...rest} render={props => auth.loggedIn() ?
     <div>
-      <div style={{float: 'right'}}><button onClick={props.logout}>Logout</button></div>
+      <div style={{float: 'right'}}>
+        <button
+          className="f6 fw1 san francisco grow link dim br-pill ph3 pv2 mb2 dib black bg-grey" href="#0"
+          onClick={rest.logout}>Logout</button></div>
       <Component {...props} />
-    </div> : <Redirect to="/" />} />
+    </div> : <Redirect to="/" />}
+  />
 
 
 module.exports = App

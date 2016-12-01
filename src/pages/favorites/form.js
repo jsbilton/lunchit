@@ -11,7 +11,7 @@ const FavoriteForm = React.createClass({
     }
   },
   componentDidMount () {
-    if(this.props.params.id) {
+    if (this.props.params.id) {
       data.get('favorites', this.props.params.id)
         .then(favorite => this.setState({favorite})
       )

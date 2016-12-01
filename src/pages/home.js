@@ -5,17 +5,17 @@ const Home = React.createClass({
   render() {
     return (
       <div>
-        <h1>LunchIt</h1>
-        <h3>Menu</h3>
-        <ul>
+        <h1 className="fw1 san francisco">LunchIt</h1>
+        <h3 className="fw1 san francisco">Menu</h3>
+        <ul className="fw1 san francisco">
           <li>
-            <a href="/favorites">Favorites</a>
+            <a className="no-underline" href="/favorites">Favorites</a>
           </li>
           <li>
-            <a href="">Circles</a>
+            <a className="no-underline" href="">Circles</a>
           </li>
           <li>
-            <Link to="/about">About</Link>
+            <Link to="/about" className="no-underline">About</Link>
           </li>
         </ul>
       </div>

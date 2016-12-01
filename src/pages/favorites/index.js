@@ -1,5 +1,5 @@
 const React = require('react')
-const {Link} = require('react-router')
+const { Link } = require('react-router')
 const data = require('../../utils/data')()
 const { map } = require('ramda')
 const Favorites = React.createClass({
@@ -15,12 +15,16 @@ const Favorites = React.createClass({
   },
   render () {
     const transform = map(fav => {
-      return <div key={fav.id}>{fav.name}</div>
+      return <div key={fav.id}>
+        <Link to={`/favorites/${fav.id}/show`}>
+        {fav.name}
+        </Link>
+      </div>
     })
     return (
       <div>
         <header>
-          <h1>Favorites</h1>
+          <h1 className="fw1 san francisco">Favorites</h1>
           <Link to="/favorites/new">New Favorite</Link>
         </header>
         {transform(this.state.favorites)}

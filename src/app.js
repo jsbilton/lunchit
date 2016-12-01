@@ -11,20 +11,17 @@ const auth = require('./utils/auth')(
 const App = React.createClass({
   getInitialState() {
     return {
-        loggedIn: null
+        logout: false
     }
   },
   logout(e) {
     auth.logout()
-    this.setState({loggedIn: true})
+    this.setState({logout: true})
   },
   render() {
     return (
       <HashRouter>
         <div>
-          {this.state.loggedIn === false
-            ? <Redirect to="/" />
-          : null }
           <Match exactly pattern="/" render={(props) => <Home {...props} auth={auth} />} />
           <MatchWhenAuthorized exactly pattern="/favorites" component={Favorites} logout={this.logout} />
           <MatchWhenAuthorized pattern="/favorites/new" component={FavoriteForm} logout={this.logout} />

@@ -8,12 +8,21 @@ module.exports = function (clientId, domain) {
     lock.show()
   }
 
+  let notifyFunction = null
+
   function _doAuthentication (authResult) {
     setToken(authResult.idToken)
+    lock.getUserInfo(authResult.accessToken, function(error, profile) {
+      if (error) return console.log(error.message)
+      localStorage.setItem('profile', JSON.stringify(profile))
+      if (notifyFunction) { notifyFunction(profile)}
+
+    })
   }
 
   function logout () {
     localStorage.removeItem('id_token')
+    localStorage.removeItem('profile')
   }
 
   function setToken(idToken) {
@@ -27,12 +36,16 @@ module.exports = function (clientId, domain) {
   function loggedIn() {
     return !!getToken()
   }
+  function notify (fn) {
+    notifyFunction = fn
+  }
 
   return {
     login,
     logout,
     loggedIn,
     setToken,
-    getToken
+    getToken,
+    notify
   }
 }

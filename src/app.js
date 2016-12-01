@@ -34,14 +34,14 @@ const App = React.createClass({
   }
 })
 
-const MatchWhenAuthorized = ({component: Component, ...rest}) =>
+const MatchWhenAuthorized = ({component: Component, logout: logout, ...rest}) =>
   <Match {...rest} render={props => auth.loggedIn() ?
     <div>
       <div style={{float: 'right'}}>
         <button
           className="f6 fw1 san francisco grow link dim br-pill ph3 pv2 mb2 dib black bg-grey" href="#0"
-          onClick={rest.logout}>Logout</button></div>
-      <Component {...props} />
+          onClick={logout}>Logout</button></div>
+      <Component {...props} logout={logout} />
     </div> : <Redirect to="/" />}
   />
 

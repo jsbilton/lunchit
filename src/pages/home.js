@@ -36,26 +36,26 @@ const Home = React.createClass({
         <img
           className="br-100"
           style={{height: '60px'}} src={this.state.picture} />
-        {this.state.username}
+        {this.state.nickname}
         <h1 className="fw1 san francisco">LunchIt</h1>
         <h3 className="fw1 san francisco">Menu</h3>
         <ul className="fw1 san francisco list">
           <li>
             <Link
               to="/favorites"
-              className="no-underline">Favorites
+              className="no-underline white-80">Favorites
             </Link>
           </li>
           <li>
             <a
-              className="no-underline"
+              className="no-underline white-80"
               href="">Circles
             </a>
           </li>
           <li>
             <Link
               to="/about"
-              className="no-underline">About
+              className="no-underline white-80">About
             </Link>
           </li>
         </ul>

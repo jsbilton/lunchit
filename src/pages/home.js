@@ -33,11 +33,13 @@ const Home = React.createClass({
         { this.state.logout
           ? <Redirect to="/about" />
           : null }
-        <img style={{height: '60px'}} src={this.state.picture} />
+        <img
+          className="br-100"
+          style={{height: '60px'}} src={this.state.picture} />
         {this.state.username}
         <h1 className="fw1 san francisco">LunchIt</h1>
         <h3 className="fw1 san francisco">Menu</h3>
-        <ul className="fw1 san francisco">
+        <ul className="fw1 san francisco list">
           <li>
             <Link
               to="/favorites"

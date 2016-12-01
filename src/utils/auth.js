@@ -1,4 +1,6 @@
 const Auth0Lock = require('auth0-lock').default
+const jwtDecode = require('jwt-decode')
+const moment = require('moment')
 
 module.exports = function (clientId, domain) {
   const lock = new Auth0Lock(clientId, domain, {} )
@@ -39,6 +41,17 @@ module.exports = function (clientId, domain) {
   function notify (fn) {
     notifyFunction = fn
   }
+
+//check if token has expired
+// prompt user to login if it is
+if (getToken()) {
+  const info = jwtDecode(getToken())
+  // console.log('current', moment().toString())
+  // console.log('expires', moment().unix(info.exp).toString())
+  if (moment().isAfter(moment.unix(info.exp))) {
+    logout()
+  }
+}
 
   return {
     login,
